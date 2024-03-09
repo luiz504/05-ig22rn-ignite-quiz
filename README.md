@@ -1,38 +1,21 @@
-<p align="center">
-  <img alt="Rocketseat Education" src="https://avatars.githubusercontent.com/u/69590972?s=200&v=4" width="100px" />
-</p>
+# Ignite Quiz
 
-<p align="center">
-  <img src="https://img.shields.io/static/v1?label=Rocketseat&message=Education&color=8257e5&labelColor=202024" alt="Rocketseat Project" />
-  <a href="LICENSE"><img  src="https://img.shields.io/static/v1?label=License&message=MIT&color=8257e5&labelColor=202024" alt="License"></a>
-</p>
+This project was built following the Rocketseat react-native bootcamp, its was
+started from a basic template to get deep into animations in react-native,
+being a good playground to flex.
 
+## React-native-reanimated
 
-## 💻 Projeto
+React-reanimated is the library used to build the project animation, being today
+the most relevant animation library in the environment, being well maintained,
+wildly adopted, performative and well documented.
 
-ignitequiz_template
+### Core concepts
 
-## 📝 Licença
+    The RNR uses the cpu treads out-of-box.
 
-Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-<p align="center">
-  Feito com 💜 by Rocketseat
-</p>
-
-
-<!--START_SECTION:footer-->
-
-<br />
-<br />
-
-<p align="center">
-  <a href="https://discord.gg/rocketseat" target="_blank">
-    <img align="center" src="https://storage.googleapis.com/golden-wind/comunidade/rodape.svg" alt="banner"/>
-  </a>
-</p>
-
-<!--END_SECTION:footer-->
-
+- useSharedValue
+  - Keep values to be used on animations, and the animation are reactive to its changes.
+- useAnimatedStyles
+  - Used to define the styles meant to be animated based on the sharedValues,must be used with Animated Components.
+- AnimatedComponent
