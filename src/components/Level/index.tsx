@@ -1,7 +1,10 @@
 import { Pressable, PressableProps, Text } from 'react-native'
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated'
 
 import { THEME } from '../../styles/theme'
@@ -34,11 +37,15 @@ export function Level({
   const COLOR = TYPE_COLORS[type]
 
   function onPressIn() {
-    scale.value = 1.2
+    const value = 1.1
+    // scale.value = withSpring(1.2)
+    scale.value = withTiming(value)
   }
 
   function onPressOut() {
-    scale.value = 1
+    const value = 1
+    // scale.value = withSpring(1)
+    scale.value = withTiming(value)
   }
 
   return (
