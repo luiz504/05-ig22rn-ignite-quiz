@@ -1,9 +1,11 @@
 {
   "extends": "@rocketseat/eslint-config/react",
-  "react-hooks/exhaustive-deps": [
-    "error",
-    {
-      "additionalHooks": "(useAnimatedStyle|useDerivedValue|useAnimatedProps)"
-    }
-  ]
+  "rules": {
+    "react-hooks/exhaustive-deps": [
+      "error",
+      {
+        "additionalHooks": "(useAnimatedStyle|useDerivedValue|useAnimatedProps)"
+      }
+    ]
+  }
 }

@@ -1,4 +1,4 @@
-import { Pressable, PressableProps, Text } from 'react-native'
+import { Pressable, PressableProps } from 'react-native'
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -9,6 +9,8 @@ import Animated, {
 import { THEME } from '../../styles/theme'
 import { styles } from './styles'
 import { useEffect } from 'react'
+
+const PressableAnimated = Animated.createAnimatedComponent(Pressable)
 
 const TYPE_COLORS = {
   EASY: THEME.COLORS.BRAND_LIGHT,
@@ -62,23 +64,24 @@ export function Level({
 
   useEffect(() => {
     checked.value = withTiming(isChecked ? 1 : 0)
-  }, [isChecked])
+  }, [isChecked, checked])
 
   return (
-    <Pressable onPressIn={onPressIn} onPressOut={onPressOut} {...rest}>
-      <Animated.View
-        style={[
-          styles.container,
-          animatedContainerStyles,
-          {
-            borderColor: COLOR,
-          },
-        ]}
-      >
-        <Animated.Text style={[styles.title, animatedTextStyles]}>
-          {title}
-        </Animated.Text>
-      </Animated.View>
-    </Pressable>
+    <PressableAnimated
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      {...rest}
+      style={[
+        styles.container,
+        animatedContainerStyles,
+        {
+          borderColor: COLOR,
+        },
+      ]}
+    >
+      <Animated.Text style={[styles.title, animatedTextStyles]}>
+        {title}
+      </Animated.Text>
+    </PressableAnimated>
   )
 }
