@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { View, ScrollView, Pressable, Alert } from 'react-native'
+import { View, ScrollView, Alert } from 'react-native'
 import { HouseLine, Trash } from 'phosphor-react-native'
 import Animated, {
   LinearTransition,
@@ -82,13 +82,13 @@ export function History() {
               ref={(ref) => ref && swipeableRefs.current.push(ref)}
               overshootRight={false}
               containerStyle={styles.swipeableContainer}
+              onSwipeableOpen={() => handleRemove(item.id, index)}
+              rightThreshold={30}
+              renderLeftActions={() => null} // prevent IOS left swipe
               renderRightActions={() => (
-                <Pressable
-                  style={styles.swipeableItem}
-                  onPress={() => handleRemove(item.id, index)}
-                >
+                <View style={styles.swipeableItem}>
                   <Trash size={32} color={THEME.COLORS.GREY_100} />
-                </Pressable>
+                </View>
               )}
             >
               <HistoryCard data={item} />
