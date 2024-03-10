@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Pressable, PressableProps } from 'react-native'
 import Animated, {
   interpolateColor,
@@ -8,7 +9,6 @@ import Animated, {
 
 import { THEME } from '../../styles/theme'
 import { styles } from './styles'
-import { useEffect } from 'react'
 
 const PressableAnimated = Animated.createAnimatedComponent(Pressable)
 
