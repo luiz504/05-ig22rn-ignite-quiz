@@ -10,4 +10,19 @@ export const styles = StyleSheet.create({
   history: {
     padding: 32,
   },
+  swipeableContainer: {
+    width: '100%',
+    height: 90,
+    marginBottom: 12,
+    borderRadius: 6,
+    backgroundColor: THEME.COLORS.DANGER_LIGHT,
+  },
+  swipeableItem: {
+    width: 90,
+    height: 90,
+    borderRadius: 6,
+    backgroundColor: THEME.COLORS.DANGER_LIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

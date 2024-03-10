@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { View, ScrollView, TouchableOpacity } from 'react-native'
-import { HouseLine } from 'phosphor-react-native'
+import { View, ScrollView, Pressable, Alert } from 'react-native'
+import { HouseLine, Trash } from 'phosphor-react-native'
 import Animated, {
   LinearTransition,
   SlideInRight,
@@ -14,6 +14,8 @@ import { HistoryCard, HistoryProps } from '../../components/HistoryCard'
 import { styles } from './styles'
 import { historyGetAll, historyRemove } from '../../storage/quizHistoryStorage'
 import { Loading } from '../../components/Loading'
+import { Swipeable } from 'react-native-gesture-handler'
+import { THEME } from '../../styles/theme'
 
 export function History() {
   const [isLoading, setIsLoading] = useState(true)
@@ -33,15 +35,15 @@ export function History() {
     fetchHistory()
   }
 
-  // function handleRemove(id: string) {
-  //   Alert.alert('Remover', 'Deseja remover esse registro?', [
-  //     {
-  //       text: 'Sim',
-  //       onPress: () => remove(id),
-  //     },
-  //     { text: 'Não', style: 'cancel' },
-  //   ])
-  // }
+  function handleRemove(id: string) {
+    Alert.alert('Remover', 'Deseja remover esse registro?', [
+      {
+        text: 'Sim',
+        onPress: () => remove(id),
+      },
+      { text: 'Não', style: 'cancel' },
+    ])
+  }
 
   useEffect(() => {
     fetchHistory()
@@ -71,9 +73,20 @@ export function History() {
             entering={SlideInRight}
             exiting={SlideOutRight}
           >
-            <TouchableOpacity onPress={() => remove(item.id)}>
+            <Swipeable
+              overshootRight={false}
+              containerStyle={styles.swipeableContainer}
+              renderRightActions={() => (
+                <Pressable
+                  style={styles.swipeableItem}
+                  onPress={() => handleRemove(item.id)}
+                >
+                  <Trash size={32} color={THEME.COLORS.GREY_100} />
+                </Pressable>
+              )}
+            >
               <HistoryCard data={item} />
-            </TouchableOpacity>
+            </Swipeable>
           </Animated.View>
         ))}
       </ScrollView>
