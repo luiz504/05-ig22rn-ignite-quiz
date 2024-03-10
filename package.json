@@ -33,7 +33,6 @@
     "@babel/core": "^7.12.9",
     "@rocketseat/eslint-config": "^2.2.2",
     "@types/react": "~18.2.45",
-    "@types/react-native": "~0.70.6",
     "eslint": "^8.57.0",
     "typescript": "^5.4.2"
   }

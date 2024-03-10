@@ -1,6 +1,8 @@
 {
   "extends": "@rocketseat/eslint-config/react",
   "rules": {
+    "no-console":"error",
+    "camelcase":"off",
     "react-hooks/exhaustive-deps": [
       "error",
       {
