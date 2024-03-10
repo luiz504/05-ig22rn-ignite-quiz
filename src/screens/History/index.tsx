@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { View, ScrollView, Pressable, Alert } from 'react-native'
 import { HouseLine, Trash } from 'phosphor-react-native'
@@ -20,6 +20,7 @@ import { THEME } from '../../styles/theme'
 export function History() {
   const [isLoading, setIsLoading] = useState(true)
   const [history, setHistory] = useState<HistoryProps[]>([])
+  const swipeableRefs = useRef<Swipeable[]>([])
 
   const { goBack } = useNavigation()
 
@@ -35,13 +36,17 @@ export function History() {
     fetchHistory()
   }
 
-  function handleRemove(id: string) {
+  function handleRemove(id: string, index: number) {
+    swipeableRefs.current?.[index]?.close()
     Alert.alert('Remover', 'Deseja remover esse registro?', [
       {
         text: 'Sim',
         onPress: () => remove(id),
       },
-      { text: 'Não', style: 'cancel' },
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
     ])
   }
 
@@ -66,7 +71,7 @@ export function History() {
         contentContainerStyle={styles.history}
         showsVerticalScrollIndicator={false}
       >
-        {history.map((item) => (
+        {history.map((item, index) => (
           <Animated.View
             key={item.id}
             layout={LinearTransition.springify()}
@@ -74,12 +79,13 @@ export function History() {
             exiting={SlideOutRight}
           >
             <Swipeable
+              ref={(ref) => ref && swipeableRefs.current.push(ref)}
               overshootRight={false}
               containerStyle={styles.swipeableContainer}
               renderRightActions={() => (
                 <Pressable
                   style={styles.swipeableItem}
-                  onPress={() => handleRemove(item.id)}
+                  onPress={() => handleRemove(item.id, index)}
                 >
                   <Trash size={32} color={THEME.COLORS.GREY_100} />
                 </Pressable>
