@@ -4,11 +4,9 @@ import Animated, {
   Easing,
   Extrapolation,
   interpolate,
-  interpolateColor,
   runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withSequence,
   withTiming,
@@ -182,9 +180,6 @@ export function Quiz() {
     opacity: interpolate(scrollY.value, [40, 80], [1, 0], Extrapolation.CLAMP),
   }))
 
-  const onLongPress = Gesture.LongPress()
-    .minDuration(2000)
-    .onStart((event) => console.log('lonPressStart'))
   const cardPosition = useSharedValue(0)
   const onPan = Gesture.Pan()
     .activateAfterLongPress(200)
@@ -240,6 +235,7 @@ export function Quiz() {
             totalOfQuestions={quiz.questions.length}
           />
         </Animated.View>
+
         <GestureDetector gesture={onPan}>
           <Animated.View style={[shakeStyleAnimated, dragStyles]}>
             <Question
