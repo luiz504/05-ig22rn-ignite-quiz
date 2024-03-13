@@ -28,6 +28,7 @@ import { ProgressBar } from '../../components/ProgressBar'
 
 import { THEME } from '../../styles/theme'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { OverlayFeedback, Status } from '../../components/OverlayFeedback'
 
 interface Params {
   id: string
@@ -46,6 +47,7 @@ export function Quiz() {
   const [alternativeSelected, setAlternativeSelected] = useState<null | number>(
     null,
   )
+  const [statusReply, setStatusReply] = useState<Status>('default')
 
   const { navigate } = useNavigation()
 
@@ -56,7 +58,12 @@ export function Quiz() {
   const shakeAnimation = () => {
     shake.value = withSequence(
       withTiming(3, { duration: 400, easing: Easing.bounce }),
-      withTiming(0),
+      withTiming(0, undefined, (finished) => {
+        'worklet'
+        if (finished) {
+          runOnJS(handleNextQuestion)()
+        }
+      }),
     )
   }
   const shakeStyleAnimated = useAnimatedStyle(() => ({
@@ -107,8 +114,11 @@ export function Quiz() {
     }
 
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
+      setStatusReply('correct')
       setPoints((prevState) => prevState + 1)
+      handleNextQuestion()
     } else {
+      setStatusReply('error')
       shakeAnimation()
     }
 
@@ -137,11 +147,7 @@ export function Quiz() {
     setIsLoading(false)
   }, [])// eslint-disable-line
 
-  useEffect(() => {
-    if (quiz.questions) {
-      handleNextQuestion()
-    }
-  }, [points]) // eslint-disable-line
+
 
   const scrollY = useSharedValue(0)
   const scrollHandler = useAnimatedScrollHandler({
@@ -214,6 +220,7 @@ export function Quiz() {
 
   return (
     <View style={styles.container}>
+      <OverlayFeedback status={statusReply} />
       <Animated.View style={fixedProgressBarStyle}>
         <Text style={styles.title}>{quiz.title}</Text>
         <ProgressBar
@@ -243,6 +250,7 @@ export function Quiz() {
               question={quiz.questions[currentQuestion]}
               alternativeSelected={alternativeSelected}
               setAlternativeSelected={setAlternativeSelected}
+              // onUnmount={() => setStatusReply('default')}
             />
           </Animated.View>
         </GestureDetector>
