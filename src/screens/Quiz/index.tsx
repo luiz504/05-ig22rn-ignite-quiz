@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Alert, Text, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Alert, BackHandler, Text, View } from 'react-native'
 import Animated, {
   Easing,
   Extrapolation,
@@ -140,7 +140,7 @@ export function Quiz() {
     setAlternativeSelected(null)
   }
 
-  function handleStop() {
+  const handleStop = useCallback(() => {
     Alert.alert('Parar', 'Deseja parar agora?', [
       {
         text: 'Não',
@@ -152,9 +152,8 @@ export function Quiz() {
         onPress: () => navigate('home'),
       },
     ])
-
-    return true
-  }
+    return true // return true to prevent default behavior of handleBackButton
+  }, [navigate])
 
   useEffect(() => {
     const quizSelected = QUIZ.filter((item) => item.id === id)[0]
@@ -228,6 +227,13 @@ export function Quiz() {
       ],
     }
   })
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleStop,
+    )
+    return () => backHandler.remove()
+  }, [handleStop])
 
   if (isLoading) {
     return <Loading />
