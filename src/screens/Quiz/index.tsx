@@ -14,6 +14,7 @@ import Animated, {
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Audio } from 'expo-av'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import * as Haptics from 'expo-haptics'
 
 import { QUIZ } from '../../data/quiz'
 import { historyAdd } from '../../storage/quizHistoryStorage'
@@ -66,7 +67,8 @@ export function Quiz() {
   const { id } = route.params as Params
 
   const shake = useSharedValue(0)
-  const shakeAnimation = () => {
+  const shakeAnimation = async () => {
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
     shake.value = withSequence(
       withTiming(3, { duration: 400, easing: Easing.bounce }),
       withTiming(0, undefined, (finished) => {
