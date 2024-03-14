@@ -11,10 +11,9 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated'
-
 import { useNavigation, useRoute } from '@react-navigation/native'
-
-import { styles } from './styles'
+import { Audio } from 'expo-av'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 
 import { QUIZ } from '../../data/quiz'
 import { historyAdd } from '../../storage/quizHistoryStorage'
@@ -25,10 +24,10 @@ import { QuizHeader } from '../../components/QuizHeader'
 import { ConfirmButton } from '../../components/ConfirmButton'
 import { OutlineButton } from '../../components/OutlineButton'
 import { ProgressBar } from '../../components/ProgressBar'
+import { OverlayFeedback, Status } from '../../components/OverlayFeedback'
 
 import { THEME } from '../../styles/theme'
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import { OverlayFeedback, Status } from '../../components/OverlayFeedback'
+import { styles } from './styles'
 
 interface Params {
   id: string
@@ -48,6 +47,18 @@ export function Quiz() {
     null,
   )
   const [statusReply, setStatusReply] = useState<Status>('default')
+
+  const playSound = async (isCorrect: boolean) => {
+    const audioFile = isCorrect
+      ? require('../../assets/correct.mp3')
+      : require('../../assets/wrong.mp3')
+
+    const { sound } = await Audio.Sound.createAsync(audioFile, {
+      shouldPlay: true,
+    })
+    await sound.setPositionAsync(0)
+    await sound.playAsync()
+  }
 
   const { navigate } = useNavigation()
 
@@ -114,10 +125,12 @@ export function Quiz() {
     }
 
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
-      setStatusReply('correct')
       setPoints((prevState) => prevState + 1)
+      await playSound(true)
+      setStatusReply('correct')
       handleNextQuestion()
     } else {
+      await playSound(false)
       setStatusReply('error')
       shakeAnimation()
     }
